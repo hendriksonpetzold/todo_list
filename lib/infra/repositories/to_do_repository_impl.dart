@@ -7,15 +7,9 @@ class ToDoRepositoryImpl implements ToDoRepository {
 
   ToDoRepositoryImpl(this.toDoDatasource);
   @override
-  Future<List<ToDo>> getTodo() {
-    Future<List> listTodo = toDoDatasource.getTodo();
+  Future<List<ToDo>> getTodo() async {
+    List listTodo = await toDoDatasource.getTodo();
     // TODO: implement getTodo
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ToDo> specificToDo() {
-    // TODO: implement specificToDo
     throw UnimplementedError();
   }
 }
