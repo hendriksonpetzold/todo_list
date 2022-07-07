@@ -2,13 +2,15 @@ import 'package:dio/dio.dart';
 import 'package:todo_list/infra/datasources/to_do_datasource.dart';
 
 class ToDoDatasourceImpl implements ToDoDatasource {
-  final data = Dio();
+  final Dio dio;
+
+  ToDoDatasourceImpl(this.dio);
 
   @override
-  Future<List> getTodo() {
-    data.get('https://jsonplaceholder.typicode.com/todos');
+  Future<List> getTodo() async {
+    final response =
+        await dio.get('https://jsonplaceholder.typicode.com/todos');
 
-    // TODO: implement getTodo
-    throw UnimplementedError();
+    return response.data;
   }
 }
