@@ -14,14 +14,14 @@ class _ToDoPageState extends State<ToDoPage> {
   @override
   void initState() {
     super.initState();
-
     Modular.get<ToDoController>().fetchToDos();
   }
 
   @override
   Widget build(BuildContext context) {
-    final store = context.watch<ToDoController>();
-    final state = store.value;
+    final controller = context.watch<ToDoController>();
+    final state = controller.value;
+    List searchList = [];
     Widget child = Container();
 
     if (state is LoadingToDoState) {
@@ -40,10 +40,11 @@ class _ToDoPageState extends State<ToDoPage> {
       child = ListView.builder(
         itemCount: state.toDos.length,
         itemBuilder: (context, index) {
+          searchList = state.toDos;
           final toDos = state.toDos[index];
           return InkWell(
             onTap: () {
-              Modular.to.navigate('/specific_todo/${toDos.id}');
+              Navigator.of(context).pushNamed('/specific_todo/${toDos.title}');
             },
             child: ListTile(
               title: Text(toDos.title),
@@ -57,6 +58,15 @@ class _ToDoPageState extends State<ToDoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ToDos'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamed('/search_to_do', arguments: searchList);
+            },
+            icon: const Icon(Icons.search),
+          )
+        ],
       ),
       body: child,
     );
