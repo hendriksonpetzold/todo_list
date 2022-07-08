@@ -1,20 +1,18 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:get/get.dart';
 
+import 'package:todo_list/domain/entities/to_do.dart';
 import 'package:todo_list/domain/usecases/get_to_do/get_to_do_usecase.dart';
-import 'package:todo_list/presenter/pages/home/to_do_state.dart';
 
-class ToDoController extends ValueNotifier<ToDoState> {
+class ToDoController extends GetxController {
   final GetToDoUsecase getToDoUsecase;
 
-  ToDoController(this.getToDoUsecase) : super(EmptyToDoState());
+  ToDoController(this.getToDoUsecase);
 
-  void emit(ToDoState newState) => value = newState;
+  List<ToDo> toDoList = [];
 
   Future<void> fetchToDos() async {
-    emit(LoadingToDoState());
-
     final result = await getToDoUsecase.execute();
-
-    emit(SucessToDoState(result));
+    toDoList = result;
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todo_list/domain/repositories/to_do_repository.dart';
 import 'package:todo_list/domain/usecases/get_to_do/get_to_do_usecase_impl.dart';
@@ -30,8 +30,9 @@ class ToDoModule extends Module {
   List<ModularRoute> get routes => [
         ChildRoute('/', child: (context, args) => const ToDoPage()),
         ChildRoute(
-          '/specific_todo/:id',
-          child: (context, args) => SpecificTodoPage(id: args.params['id']),
+          '/specific_todo/:title',
+          child: (context, args) =>
+              SpecificTodoPage(title: args.params['title']),
         ),
         ChildRoute(
           '/search_to_do',

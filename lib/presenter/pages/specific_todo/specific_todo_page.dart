@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class SpecificTodoPage extends StatelessWidget {
-  final String id;
+  final String title;
 
-  const SpecificTodoPage({Key? key, required this.id}) : super(key: key);
+  const SpecificTodoPage({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('ToDo especifico'),
       ),
-      body: Container(
-        child: Text(id),
+      body: Center(
+        child: SizedBox(
+          child: Text(title),
+        ),
       ),
     );
   }

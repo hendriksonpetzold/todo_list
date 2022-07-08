@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/domain/entities/to_do.dart';
 
 class SearchToDoPage extends StatelessWidget {
-  List<ToDo> list;
+  final List<ToDo> list;
 
   SearchToDoPage({Key? key, required this.list}) : super(key: key);
   final TextEditingController searchEC = TextEditingController();

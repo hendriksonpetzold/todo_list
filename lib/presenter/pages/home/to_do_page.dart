@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:todo_list/presenter/pages/home/to_do_state.dart';
+
 import 'package:todo_list/presenter/pages/home/to_do_controller.dart';
 
 class ToDoPage extends StatefulWidget {
@@ -11,64 +11,43 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPageState extends State<ToDoPage> {
-  @override
-  void initState() {
-    super.initState();
-    Modular.get<ToDoController>().fetchToDos();
-  }
+  ToDoController controller = Modular.get<ToDoController>();
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ToDoController>();
-    final state = controller.value;
-    List searchList = [];
-    Widget child = Container();
-
-    if (state is LoadingToDoState) {
-      child = const Center(
-        child: CircularProgressIndicator.adaptive(),
-      );
-    }
-
-    if (state is ErrorToDoState) {
-      child = const Center(
-        child: Text('error'),
-      );
-    }
-
-    if (state is SucessToDoState) {
-      child = ListView.builder(
-        itemCount: state.toDos.length,
-        itemBuilder: (context, index) {
-          searchList = state.toDos;
-          final toDos = state.toDos[index];
-          return InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed('/specific_todo/${toDos.title}');
-            },
-            child: ListTile(
-              title: Text(toDos.title),
-              subtitle: Text('completed: ${toDos.completed}'),
-            ),
-          );
-        },
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('ToDos'),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamed('/search_to_do', arguments: searchList);
+              Navigator.of(context).pushNamed('/search_to_do');
             },
             icon: const Icon(Icons.search),
           )
         ],
       ),
-      body: child,
+      body: FutureBuilder(
+        future: controller.fetchToDos(),
+        builder: (context, snapshot) {
+          return ListView.builder(
+            itemCount: controller.toDoList.length,
+            itemBuilder: (context, index) {
+              final list = controller.toDoList[index];
+              return InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed('/specific_todo/${list.title}');
+                },
+                child: ListTile(
+                  title: Text(list.title),
+                  subtitle: Text('${list.completed}'),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
