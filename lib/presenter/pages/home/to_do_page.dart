@@ -21,7 +21,8 @@ class _ToDoPageState extends State<ToDoPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/search_to_do');
+              Navigator.of(context)
+                  .pushNamed('/search_to_do', arguments: controller.toDoList);
             },
             icon: const Icon(Icons.search),
           )

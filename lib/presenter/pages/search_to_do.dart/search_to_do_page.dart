@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:get/get.dart';
 import 'package:todo_list/domain/entities/to_do.dart';
+import 'package:todo_list/presenter/pages/home/to_do_controller.dart';
 
-class SearchToDoPage extends StatelessWidget {
+class SearchToDoPage extends StatefulWidget {
   final List<ToDo> list;
 
-  SearchToDoPage({Key? key, required this.list}) : super(key: key);
-  final TextEditingController searchEC = TextEditingController();
+  const SearchToDoPage({Key? key, required this.list}) : super(key: key);
+
+  @override
+  State<SearchToDoPage> createState() => _SearchToDoPageState();
+}
+
+class _SearchToDoPageState extends State<SearchToDoPage> {
+  @override
+  void initState() {
+    super.initState();
+    Modular.get<ToDoController>().fetchToDos();
+  }
+
+  ToDoController controller = Modular.get<ToDoController>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,20 +30,29 @@ class SearchToDoPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TextFormField(
-            controller: searchEC,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+              controller: controller.searchEC,
+            ),
           ),
           const SizedBox(
             height: 8,
           ),
-          const ListTile(
-            title: Text('Teste'),
-          ),
+          Obx(() {
+            return Text('${controller.text}');
+          }),
+          Obx(() {
+            return Text('${controller.completed}');
+          }),
           ElevatedButton(
             onPressed: () async {
-              print(list);
+              controller.getTitleList();
             },
-            child: const Text('print list'),
+            child: const Text('PESQUISAR'),
           )
         ],
       ),

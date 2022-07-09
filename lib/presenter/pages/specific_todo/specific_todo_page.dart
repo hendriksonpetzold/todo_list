@@ -9,7 +9,7 @@ class SpecificTodoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ToDo especifico'),
+        title: const Text('ToDo específico'),
       ),
       body: Center(
         child: SizedBox(
